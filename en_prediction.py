@@ -40,6 +40,6 @@ for dataset_name in ['test', 'dev']:
     print("generating dataset structure...")
     data[dataset_name]['torch_dataset'] = SCDataset(data[dataset_name]['encoding'], data[dataset_name]['labels'])
     print("making predictions...")
-    predicted_labels = model.predict(data[dataset_name]['torch_dataset'])
+    predicted_labels = model(data[dataset_name]['torch_dataset'])
     actual_predicted_labels = predicted_labels.predictions.argmax(-1)
     print(classification_report(predicted_labels.label_ids.flatten(), actual_predicted_labels.flatten()))
