@@ -1,7 +1,9 @@
 import json
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support, classification_report
+import pickle as pk
+
 import torch
 import transformers
+from sklearn.metrics import classification_report
 
 checkpoint = "./results/checkpoint-37500"
 model_name = 'distilbert-base-uncased'
@@ -23,6 +25,7 @@ class SCDataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.labels)
 
+
 print("init model...")
 model = transformers.AutoModel.from_pretrained(checkpoint).to(device_name)
 tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
@@ -32,14 +35,22 @@ for dataset_name in ['test', 'dev']:
     raw_data = [json.loads(line) for line in open(data_dir + f'dataset_en_{dataset_name}.json', 'r', encoding='utf-8')]
     data[dataset_name] = {
         "text": [r['review_body'] for r in raw_data],
-        "labels": [0 if int(r['stars']) <= 3 else 1 for r in raw_data]
+        "binary_labels": [0 if int(r['stars']) <= 3 else 1 for r in raw_data],
+        "original_labels": [r['stars'] for r in raw_data],
     }
     print("generating encoding...")
-    data[dataset_name]['encoding'] = tokenizer(data[dataset_name]['text'], truncation=True, padding=True)
+    data[dataset_name]['encoding'] = [tokenizer(t, truncation=True, padding=True, return_tensors='pt') for t in
+                                      data[dataset_name]['text']]
+    # print("generating dataset structure...")
+    # data[dataset_name]['torch_dataset'] = SCDataset(data[dataset_name]['encoding'], data[dataset_name]['binary_labels'])
+    pk.dump(data[dataset_name], open(f"distilbert_dataset_en_{dataset_name}.pk", "wb"))
 
-    print("generating dataset structure...")
-    data[dataset_name]['torch_dataset'] = SCDataset(data[dataset_name]['encoding'], data[dataset_name]['labels'])
+predictions = dict()
+for dataset_name in ['test', 'dev']:
     print("making predictions...")
-    predicted_labels = model(data[dataset_name]['encoding'])
-    actual_predicted_labels = predicted_labels.predictions.argmax(-1)
-    print(classification_report(predicted_labels.label_ids.flatten(), actual_predicted_labels.flatten()))
+    predictions[dataset_name] = list()
+    for enc in data[dataset_name]['encoding']:
+        predictions[dataset_name].append(model(**enc))
+pk.dump(predictions, open(f"distilbert_predictions_en.pk", "wb"))
+    # actual_predicted_labels = predicted_labels.predictions.argmax(-1)
+    # print(classification_report(predicted_labels.label_ids.flatten(), actual_predicted_labels.flatten()))
