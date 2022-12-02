@@ -24,7 +24,7 @@ class SCDataset(torch.utils.data.Dataset):
         return len(self.labels)
 
 print("init model...")
-model = transformers.AutoModel(checkpoint).to(device_name)
+model = transformers.AutoModel.from_pretrained(checkpoint).to(device_name)
 tokenizer = transformers.AutoTokenizer(checkpoint)
 
 for dataset_name in ['test', 'dev']:
