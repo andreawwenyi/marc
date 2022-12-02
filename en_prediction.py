@@ -4,7 +4,7 @@ import torch
 import transformers
 
 checkpoint = "./results/checkpoint-37500"
-
+model_name = 'distilbert-base-uncased'
 data_dir = "./data/"
 device_name = 'cuda'
 data = {}
@@ -25,7 +25,7 @@ class SCDataset(torch.utils.data.Dataset):
 
 print("init model...")
 model = transformers.AutoModel.from_pretrained(checkpoint).to(device_name)
-tokenizer = transformers.AutoTokenizer(checkpoint)
+tokenizer = transformers.AutoTokenizer.from_pretrained(checkpoint)
 
 for dataset_name in ['test', 'dev']:
     print(dataset_name)
