@@ -24,6 +24,7 @@ from transformers import Trainer, TrainingArguments
 # Transformer library
 import json
 
+model_output_path = ''
 # Choose the model that we want to use (make sure to keep the cased/uncased consistent)
 model_name = 'distilbert-base-uncased'
 
