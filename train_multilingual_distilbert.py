@@ -18,8 +18,8 @@ def finetune_mdistilbert(finetune_lang):
 
     print("reading files")
     data = {
-        "train": pk.load(open(f"clean_{finetune_lang}_train.pk", "rb")),
-        "dev": pk.load(open(f"clean_{finetune_lang}_dev.pk", "rb")),
+        "train": pk.load(open(data_dir + f"clean_{finetune_lang}_train.pk", "rb")),
+        "dev": pk.load(open(data_dir + f"clean_{finetune_lang}_dev.pk", "rb")),
     }
     print("load tokenizer")
     # load the encoder/tokenizer
@@ -89,5 +89,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-lang", "--finetune_lang", required=True, type=str)
     args = parser.parse_args()
-
-    finetune_mdistilbert(args.finetune_lang)
+    print(args)
+    # finetune_mdistilbert(args.finetune_lang)
