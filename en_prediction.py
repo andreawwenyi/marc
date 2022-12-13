@@ -6,7 +6,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 checkpoint = "./results/checkpoint-37500"
 model_name = 'distilbert-base-uncased'
 data_dir = "./data/"
-device_name = 'cuda'
+device_name = "cuda" if torch.cuda.is_available() else "cpu"
 num_labels = 2
 data = {}
 
@@ -22,7 +22,7 @@ for segment_name in ['test', 'dev']:
 
     print("encoding...")
     inputs = data['text']
-    encoding = tokenizer(inputs, truncation=True, padding=True, return_tensors='pt')
+    encoding = tokenizer(inputs, truncation=True, padding=True, return_tensors='pt').to(device_name)
     print("making predictions...")
     model.eval()  # set to evaluation mode
     with torch.no_grad():
