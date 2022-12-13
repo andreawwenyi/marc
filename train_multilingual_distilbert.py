@@ -29,7 +29,7 @@ def finetune_mdistilbert(finetune_lang):
 
     class SCDataset(torch.utils.data.Dataset):
         def __init__(self, input_texts, labels):
-            self.encodings = tokenizer(input_texts, truncation=True, padding=True, return_tensor='pt')
+            self.encodings = tokenizer(input_texts, truncation=True, padding=True, return_tensors='pt')
             self.labels = labels
 
         def __getitem__(self, idx):
