@@ -35,4 +35,4 @@ for segment_name in ['test', 'dev']:
             _, pred = torch.max(output[0], dim=1)
             predictions[segment_name] += pred
 
-pk.dump(predictions, open(f"distilbert_predictions_en_binary.pk", "wb"))
+torch.save(predictions, f"distilbert_predictions_en_binary.pt")
