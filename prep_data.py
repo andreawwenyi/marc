@@ -7,7 +7,7 @@ data_dir = "./data/"
 for filename in os.listdir(data_dir):
     if filename.endswith("json"):
         print(filename)
-        _, lang, segment = filename.strip(".json").split("-")
+        _, lang, segment = filename.strip(".json").split("_")
         raw_data = [json.loads(line) for line in open(data_dir + filename,
                                                       'r',
                                                       encoding='utf-8')]
