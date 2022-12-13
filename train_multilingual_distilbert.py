@@ -89,5 +89,4 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-lang", "--finetune_lang", required=True, type=str)
     args = parser.parse_args()
-    print(args)
-    # finetune_mdistilbert(args.finetune_lang)
+    finetune_mdistilbert(args.finetune_lang)
