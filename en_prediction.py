@@ -33,6 +33,6 @@ for segment_name in ['test', 'dev']:
             encoding = tokenizer(batched_inputs, truncation=True, padding=True, return_tensors='pt').to(device_name)
             output = model(**encoding)
             _, pred = torch.max(output[0], dim=1)
-            predictions[segment_name] += pred
+            predictions[segment_name] += pred.tolist()
 
-torch.save(predictions, f"distilbert_predictions_en_binary.pt")
+pk.dump(predictions, open(f"distilbert_predictions_en_binary.pk", "wb"))
