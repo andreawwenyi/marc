@@ -67,7 +67,7 @@ def finetune_mdistilbert(finetune_lang):
         weight_decay=0.01,  # strength of weight decay
         logging_dir='./logs',  # directory for storing logs
         logging_steps=10,
-        evaluation_strategy='steps',
+        evaluation_strategy='epoch',
     )
     trainer = Trainer(
         model=model,  # the instantiated 🤗 Transformers model to be trained
