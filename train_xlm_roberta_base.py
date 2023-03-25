@@ -23,13 +23,13 @@ def compute_metrics(pred):
     }
 
 
-def finetune_mdistilbert(finetune_lang):
-    model_output_path = f'./models/{model_name}/{finetune_lang}'
+def finetune(model_lang):
+    model_output_path = f'./models/{model_name}/{model_lang}'
 
     print("reading files")
     original_dataset = {
-        "train": pk.load(open(data_dir + f"clean_{finetune_lang}_train.pk", "rb")),
-        "dev": pk.load(open(data_dir + f"clean_{finetune_lang}_dev.pk", "rb")),
+        "train": pk.load(open(data_dir + f"clean_{model_lang}_train.pk", "rb")),
+        "dev": pk.load(open(data_dir + f"clean_{model_lang}_dev.pk", "rb")),
     }
     print("load tokenizer")
     # load the encoder/tokenizer
@@ -51,7 +51,7 @@ def finetune_mdistilbert(finetune_lang):
             return len(self.labels)
 
     lm_dataset = {"train": SCDataset(original_dataset['train']['text'], original_dataset['train']['binary_labels']),
-               "dev": SCDataset(original_dataset['dev']['text'], original_dataset['dev']['binary_labels'])}
+                  "dev": SCDataset(original_dataset['dev']['text'], original_dataset['dev']['binary_labels'])}
 
     print("init model")
 
@@ -86,6 +86,6 @@ def finetune_mdistilbert(finetune_lang):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-lang", "--finetune_lang", required=True, type=str)
+    parser.add_argument("-lang", "--model_lang", required=True, type=str)
     args = parser.parse_args()
-    finetune_mdistilbert(args.finetune_lang)
+    finetune(args.model_lang)

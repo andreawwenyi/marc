@@ -13,13 +13,13 @@ device_name = 'cuda'
 data_dir = "./data/"
 
 
-def finetune_mdistilbert(finetune_lang):
-    model_output_path = f'./models/mdistilbert-{finetune_lang}'
+def fintune(model_lang):
+    model_output_path = f'./models/mdistilbert-{model_lang}'
 
     print("reading files")
     data = {
-        "train": pk.load(open(data_dir + f"clean_{finetune_lang}_train.pk", "rb")),
-        "dev": pk.load(open(data_dir + f"clean_{finetune_lang}_dev.pk", "rb")),
+        "train": pk.load(open(data_dir + f"clean_{model_lang}_train.pk", "rb")),
+        "dev": pk.load(open(data_dir + f"clean_{model_lang}_dev.pk", "rb")),
     }
     print("load tokenizer")
     # load the encoder/tokenizer
@@ -87,6 +87,6 @@ def finetune_mdistilbert(finetune_lang):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-lang", "--finetune_lang", required=True, type=str)
+    parser.add_argument("-mlang", "--model-lang", required=True, type=str)
     args = parser.parse_args()
-    finetune_mdistilbert(args.finetune_lang)
+    fintune(args.model_lang)
