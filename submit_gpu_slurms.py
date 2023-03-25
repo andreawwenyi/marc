@@ -1,7 +1,9 @@
-
 import argparse
 import os
+import pathlib
+current_file_location = pathlib.Path(__file__).parent.resolve()
 
+PROJECT_FOLDER = current_file_location.split("/")[-1]
 parser = argparse.ArgumentParser()
 parser.add_argument("-py", "--py_func", required=True, type=str)
 parser.add_argument("-l", "--model-lang", required=True, type=str, nargs="+")
@@ -23,7 +25,7 @@ for mlang in args.model_lang:
     echo "Activating huggingface environment"
     source /share/apps/anaconda3/2021.05/bin/activate huggingface
     echo "Beginning script"
-    cd /share/luxlab/andrea/marc
+    cd /share/luxlab/andrea/{PROJECT_FOLDER}
     python3 {args.py_func} --model-lang {mlang}
                 """
             )
@@ -33,7 +35,7 @@ for mlang in args.model_lang:
                 echo "Activating huggingface environment"
                 source /share/apps/anaconda3/2021.05/bin/activate huggingface
                 echo "Beginning script"
-                cd /share/luxlab/andrea/marc
+                cd /share/luxlab/andrea/{PROJECT_FOLDER}
                 python3 {args.py_func} --model-lang {mlang} --{variable_name} {variable_value}
                             """
         )
@@ -42,8 +44,8 @@ for mlang in args.model_lang:
         f.write(
             f"""#!/bin/bash
 #SBATCH -J {mlang}-{job_prefix}                          # Job name
-#SBATCH -o /share/luxlab/andrea/religion-subreddits/logs/{mlang}-{job_prefix}_%j.out # output file (%j expands to jobID)
-#SBATCH -e /share/luxlab/andrea/religion-subreddits/logs/{mlang}-{job_prefix}_%j.err # error log file (%j expands to jobID)
+#SBATCH -o /share/luxlab/andrea/{PROJECT_FOLDER}/logs/{mlang}-{job_prefix}_%j.out # output file (%j expands to jobID)
+#SBATCH -e /share/luxlab/andrea/{PROJECT_FOLDER}/logs/{mlang}-{job_prefix}_%j.err # error log file (%j expands to jobID)
 #SBATCH --mail-type=ALL                        # Request status by email
 #SBATCH --mail-user=aww66@cornell.edu          # Email address to send results to.
 #SBATCH -N 1                                   # Total number of nodes requested
@@ -53,7 +55,7 @@ for mlang in args.model_lang:
 #SBATCH -t 10:00:00                            # Time limit (hh:mm:ss)
 #SBATCH --partition=gpu          # Request partition
 #SBATCH --gres=gpu:1
-/share/luxlab/andrea/religion-subreddits/{mlang}-{job_prefix}.sh
+/share/luxlab/andrea/{PROJECT_FOLDER}/{mlang}-{job_prefix}.sh
             """
         )
     os.system(f"chmod 775 {mlang}-{job_prefix}.sh")
