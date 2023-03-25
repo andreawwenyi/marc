@@ -20,7 +20,7 @@ job_prefix = args.py_func.split(".")[0]
 # write sh file
 for mlang in args.model_lang:
     with open(f"./{mlang}-{job_prefix}.sh", "w") as f:
-        if variable_value:
+        if not variable_value:
             f.write(
                 f"""#!/bin/bash
     echo "Activating huggingface environment"

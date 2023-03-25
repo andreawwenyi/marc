@@ -9,6 +9,7 @@ parser.add_argument("-py", "--py_func", required=True, type=str)
 parser.add_argument("-l", "--model-lang", required=True, type=str, nargs="+")
 parser.add_argument("-v", "--variable", type=str)
 args = parser.parse_args()
+print(args)
 variable_name = None
 variable_value = None
 if args.variable:
@@ -19,7 +20,7 @@ job_prefix = args.py_func.split(".")[0]
 # write sh file
 for mlang in args.model_lang:
     with open(f"./{mlang}-{job_prefix}.sh", "w") as f:
-        if variable_value:
+        if not variable_value:
             f.write(
                 f"""#!/bin/bash
     echo "Activating huggingface environment"
