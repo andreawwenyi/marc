@@ -1,7 +1,7 @@
 import argparse
 import os
 import pathlib
-current_file_location = pathlib.Path(__file__).parent.resolve()
+current_file_location = str(pathlib.Path(__file__).parent.resolve())
 
 PROJECT_FOLDER = current_file_location.split("/")[-1]
 
