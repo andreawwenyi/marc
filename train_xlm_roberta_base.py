@@ -86,6 +86,6 @@ def finetune(model_lang):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-lang", "--model_lang", required=True, type=str)
+    parser.add_argument("-lang", "--model-lang", required=True, type=str)
     args = parser.parse_args()
     finetune(args.model_lang)
