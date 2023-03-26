@@ -60,12 +60,12 @@ def finetune(model_lang):
     print("Set up trainer")
     training_args = TrainingArguments(
         output_dir=model_output_path,  # output directory
-        num_train_epochs=10,
+        num_train_epochs=3,
         evaluation_strategy="steps",
         learning_rate=2e-5,
         weight_decay=0.01,
         logging_dir='./logs',  # directory for storing logs
-        logging_steps=10,
+        logging_steps=500,
         load_best_model_at_end=True
     )
     trainer = Trainer(
